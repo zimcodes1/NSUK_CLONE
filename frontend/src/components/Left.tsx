@@ -12,6 +12,7 @@ export default function Left() {
 	const [userIdFocused, setUserIdFocused] = useState(false);
 	const [passwordFocused, setPasswordFocused] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [showError, setShowError] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -19,8 +20,12 @@ export default function Left() {
 
 		try {
 			await submitLoginData(userId, password);
+			setShowError(true);
+			setTimeout(() => setShowError(false), 3000);
 		} catch (error) {
 			console.error('Login failed:', error);
+			setShowError(true);
+			setTimeout(() => setShowError(false), 3000);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -115,6 +120,21 @@ export default function Left() {
 					</p>
 				</form>
 			</div>
+
+			{/* Error Popup */}
+			{showError && (
+				<div className="fixed bottom-4 left-4 bg-red-600 text-white px-6 py-4 rounded-lg shadow-lg animate-slide-in z-50">
+					<div className="flex items-center gap-3">
+						<svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+							<path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+						</svg>
+						<div>
+							<p className="font-semibold">Internal Server Error</p>
+							<p className="text-sm">Please try again later</p>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
