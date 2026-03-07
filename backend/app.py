@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import logging
 import json
 from datetime import datetime
 
 app = Flask(__name__)
+CORS(app)
 
 logging.basicConfig(
     filename='lab_capture.log',

