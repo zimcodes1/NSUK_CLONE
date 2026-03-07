@@ -27,12 +27,12 @@ export default function Left() {
 	};
 
 	return (
-		<div className="w-[58%] max-sm:w-full max-sm:absolute max-sm:bottom-0 max-sm:rounded-b-none flex items-center justify-center bg-white">
-			<div className="bg-white rounded-2xl box-shadow shadow-gray-400 p-10 w-125">
+		<div className="w-[58%] max-[950px]:w-full max-sm:absolute max-sm:bottom-0 max-sm:rounded-b-none flex items-center justify-center bg-white">
+			<div className="bg-white rounded-2xl box-shadow shadow-gray-400 p-10 max-sm:w-full max-[950px]:w-10/11 w-125">
 				<h1 className="text-4xl font-bold roboto text-[#162d6c] mb-2">
 					Welcome Back
 				</h1>
-				<p className="text-gray-800 mb-8">Please login below to continue</p>
+				<p className="text-gray-800 mb-8">Sign in to access your account</p>
 
 				<form className="space-y-6" onSubmit={handleSubmit}>
 					<div className="relative">
