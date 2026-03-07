@@ -1,0 +1,27 @@
+# Python virtual environment
+backend/bin/
+backend/include/
+backend/lib/
+backend/lib64
+backend/pyvenv.cfg
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+backend/lab_capture.log
