@@ -1,4 +1,8 @@
 import { useState } from "react";
+import UserIcon from "./UI/UserIcon";
+import Lock from "./UI/Lock";
+import EyeOpen from "./UI/EyeOpen";
+import EyeClosed from "./UI/EyeClosed";
 
 export default function Left() {
 	const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +24,7 @@ export default function Left() {
 						<span
 							className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${userIdFocused || userId ? "text-[#14C38E]" : "text-gray-400"}`}
 						>
-							<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-								<path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
-							</svg>
+							<UserIcon />
 						</span>
 						<input
 							type="text"
@@ -43,13 +45,7 @@ export default function Left() {
 						<span
 							className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors ${passwordFocused || password ? "text-[#14C38E]" : "text-gray-400"}`}
 						>
-							<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-								<path
-									fillRule="evenodd"
-									d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-									clipRule="evenodd"
-								/>
-							</svg>
+							<Lock/>
 						</span>
 						<input
 							type={showPassword ? "text" : "password"}
@@ -69,14 +65,7 @@ export default function Left() {
 							onClick={() => setShowPassword(!showPassword)}
 							className={`absolute right-4 top-1/2 -translate-y-1/2 transition-colors ${passwordFocused || password ? "text-[#14C38E]" : "text-gray-400"} hover:text-gray-600`}
 						>
-							<svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-								<path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-								<path
-									fillRule="evenodd"
-									d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-									clipRule="evenodd"
-								/>
-							</svg>
+							{showPassword ? <EyeOpen/> : <EyeClosed/>}
 						</button>
 					</div>
 
