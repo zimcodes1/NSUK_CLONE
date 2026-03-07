@@ -32,8 +32,8 @@ export default function Left() {
 	};
 
 	return (
-		<div className="w-[58%] max-[950px]:w-full max-sm:absolute max-sm:bottom-0 max-sm:rounded-b-none flex items-center justify-center bg-white">
-			<div className="bg-white rounded-2xl box-shadow shadow-gray-400 p-10 max-sm:w-full max-[950px]:w-10/11 w-125">
+		<div className="w-[58%] max-sm:h-full max-[950px]:w-full flex items-center justify-center bg-white">
+			<div className="bg-white rounded-2xl max-sm:absolute max-sm:bottom-0 max-sm:rounded-b-none box-shadow shadow-gray-400 p-10 max-sm:w-full max-[950px]:w-10/11 w-125">
 				<h1 className="text-4xl font-bold roboto text-[#162d6c] mb-2">
 					Welcome Back
 				</h1>

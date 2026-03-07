@@ -4,7 +4,7 @@ import MobileBar from "./components/MobileBar";
 
 export default function Login() {
   return (
-    <div className="h-screen flex">
+    <div className="h-dvh flex max-sm:flex-col max-sm:justify-between">
       <MobileBar></MobileBar>
       {/* Left Side - Login Form */}
       <Left />
