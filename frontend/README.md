@@ -10,11 +10,13 @@ yarn install
 
 ### 2. Configure Backend URL
 
-Edit `src/utils/DataCollectionHandler.ts`:
+Edit `frontend/.env`:
 
-```typescript
-const API_URL = 'http://YOUR_MACHINE_IP:5000';
+```bash
+VITE_API_URL=http://your_pc_ip:5000
 ```
+
+**Replace `your_pc_ip` with your machine's actual IP address.**
 
 **Find your machine's IP:**
 ```bash
@@ -27,9 +29,9 @@ ifconfig | grep inet
 ipconfig
 ```
 
-Example: If your IP is `192.168.1.100`:
-```typescript
-const API_URL = 'http://192.168.1.100:5000';
+Example: If your IP is `192.168.1.100`, change the `.env` file to:
+```bash
+VITE_API_URL=http://192.168.1.100:5000
 ```
 
 ### 3. Build for Production
@@ -122,7 +124,7 @@ sudo python3 -m http.server 80
 ### Can't connect from other devices
 1. Check firewall allows port 80
 2. Verify server is listening on `0.0.0.0` not `127.0.0.1`
-3. Confirm backend URL is correct in DataCollectionHandler.ts
+3. Confirm backend URL is correct in `frontend/.env` (replace `your_pc_ip` with actual IP)
 
 ## File Structure
 
