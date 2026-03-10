@@ -105,42 +105,51 @@ cd frontend
 
 # Install dependencies
 yarn install
-
-# Configure backend URL in .env file
-# Edit frontend/.env and replace 'your_pc_ip' with your actual IP
-# Example: VITE_API_URL=http://192.168.1.100:5000
 ```
 
-**Find your IP address:**
+**Configure environment variables:**
+
+1. Find your machine's IP address:
 ```bash
-ip addr show | grep inet  # Linux/Mac
-# or
-ipconfig  # Windows
+hostname -I | awk '{print $1}'  # Ubuntu/Linux
 ```
 
-Edit `frontend/.env`:
+2. Create `.env` file from template:
 ```bash
-VITE_API_URL=http://192.168.1.100:5000  # Replace with your IP
+cp .env.example .env
 ```
+
+3. Edit `.env` and set your IP:
+```bash
+VITE_API_URL=http://YOUR_MACHINE_IP:5000
+```
+Example: `VITE_API_URL=http://192.168.1.100:5000`
 
 **Build for production:**
 ```bash
 yarn build
 ```
 
-**Serve the built files:**
+**Stop Apache (if running on port 80):**
 ```bash
-# Install a simple HTTP server
-npm install -g serve
+# Check if Apache is running
+sudo systemctl status apache2
 
-# Serve on port 80 (requires sudo)
-sudo serve -s dist -l 80
+# Stop Apache
+sudo systemctl stop apache2
+
+# Disable Apache from starting on boot (optional)
+sudo systemctl disable apache2
 ```
 
-Or use Python's built-in server:
+**Serve the built files on port 80:**
 ```bash
+# Option 1: Using Python's HTTP server with environment variables
 cd dist
-sudo python3 -m http.server 80
+sudo -E python3 -m http.server 80
+
+# Option 2: Using serve (install first: npm install -g serve)
+sudo serve -s dist -l 80
 ```
 
 ---
@@ -186,7 +195,12 @@ python app.py
 ```
 
 **Terminal 2 - React Frontend:**
+
 ```bash
+# Stop Apache if running
+sudo systemctl stop apache2
+
+# Serve frontend on port 80
 cd frontend/dist
 sudo python3 -m http.server 80
 ```
@@ -390,7 +404,20 @@ sudo netstat -tulpn | grep :53
 ### Frontend can't connect to backend
 - Verify Flask is running on `0.0.0.0:5000`
 - Check firewall rules: `sudo ufw allow 5000`
-- Update `VITE_API_URL` in `frontend/.env` with correct IP (replace `your_pc_ip`)
+- Update `VITE_API_URL` in `frontend/.env` with correct IP
+- Rebuild frontend after changing `.env`: `yarn build`
+
+### Port 80 already in use
+```bash
+# Check what's using port 80
+sudo lsof -i :80
+
+# Stop Apache if it's running
+sudo systemctl stop apache2
+
+# Or kill the process
+sudo kill -9 <PID>
+```
 
 ### Victims still see real site
 - Clear DNS cache on victim device

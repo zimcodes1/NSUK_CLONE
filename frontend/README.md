@@ -10,29 +10,26 @@ yarn install
 
 ### 2. Configure Backend URL
 
-Edit `frontend/.env`:
-
-```bash
-VITE_API_URL=http://your_pc_ip:5000
-```
-
-**Replace `your_pc_ip` with your machine's actual IP address.**
-
 **Find your machine's IP:**
 ```bash
-# Linux/Mac
+# Ubuntu/Linux
+hostname -I | awk '{print $1}'
+
+# Alternative
 ip addr show | grep inet
-# or
-ifconfig | grep inet
-
-# Windows
-ipconfig
 ```
 
-Example: If your IP is `192.168.1.100`, change the `.env` file to:
+**Create `.env` file:**
 ```bash
-VITE_API_URL=http://192.168.1.100:5000
+cp .env.example .env
 ```
+
+**Edit `.env` and set your IP:**
+```bash
+VITE_API_URL=http://YOUR_MACHINE_IP:5000
+```
+
+Example: `VITE_API_URL=http://192.168.1.100:5000`
 
 ### 3. Build for Production
 
@@ -43,6 +40,18 @@ yarn build
 This creates optimized files in the `dist/` folder.
 
 ### 4. Serve the Application
+
+**Stop Apache if running on port 80 (Ubuntu):**
+```bash
+# Check if Apache is running
+sudo systemctl status apache2
+
+# Stop Apache
+sudo systemctl stop apache2
+
+# Disable from auto-start (optional)
+sudo systemctl disable apache2
+```
 
 **Option 1: Using Python (Recommended for Lab)**
 ```bash
